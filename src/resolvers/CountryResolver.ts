@@ -22,6 +22,15 @@ export class CountryResolver {
     return countries;
   }
 
+  @Query(() => CountryEntity)
+  async countryByCode(@Arg("code") code: string): Promise<CountryEntity | null> {
+    const country = await CountryEntity.findOne({ where: { code } });
+    if (!country) {
+      throw new Error(`Country with code ${code} not found`);
+    }
+    return country;
+  }
+
   @Mutation(() => CountryEntity)
   async createCountry(@Arg("data") data: CountryInput): Promise<CountryEntity> {
     let country = new CountryEntity();

@@ -32,6 +32,20 @@ export class CountryResolver {
     return country;
   }
 
+  @Query(() => [CountryEntity])
+  async countriesByContinent(@Arg("continent") continentCode: string): Promise<CountryEntity[]> {
+    const continent = await ContinentEntity.findOne({
+      where: { code: continentCode },
+      relations: ["countries"],
+    });
+
+    if (!continent) {
+      throw new Error(`Continent with code ${continentCode} not found`);
+    }
+
+    return continent.countries ?? [];
+  }
+
   @Mutation(() => CountryEntity)
   async createCountry(
     @Arg("data") data: CountryInput,

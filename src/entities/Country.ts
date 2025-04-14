@@ -1,6 +1,7 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { ObjectType, Field } from "type-graphql";
+import { ContinentEntity } from "./Continent";
 
 @Entity({ name: "country" })
 @ObjectType()
@@ -20,4 +21,13 @@ export class CountryEntity extends BaseEntity {
   @Column({ nullable: true })
   @Field()
   emoji?: string;
+
+  @Field(() => ContinentEntity)
+  @JoinColumn({ name: "continent" })
+  @ManyToOne(
+    () => ContinentEntity,
+    (continent) => continent.countries,
+    { onDelete: "CASCADE", nullable: false },
+  )
+  continent!: ContinentEntity;
 }

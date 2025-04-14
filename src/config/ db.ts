@@ -1,10 +1,11 @@
 import { DataSource } from "typeorm";
 import { CountryEntity } from "../entities/Country";
+import { ContinentEntity } from "../entities/Continent";
 
 const dataSource = new DataSource({
   type: "sqlite",
   database: "./checkpoint.sqlite",
-  entities: [CountryEntity],
+  entities: [CountryEntity, ContinentEntity],
   synchronize: true,
 });
 
